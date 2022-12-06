@@ -2,30 +2,34 @@ package listfile
 
 import (
 	"fmt"
-	"log"
 	"os"
+
+	"myls/colors"
+	error "myls/error"
+	filetype "myls/fileType"
 )
 
 func ListFile(path string) {
 	files, err := os.ReadDir(path)
-	if err != nil {
-		log.Fatal(err)
-	}
+	error.Error(err)
 
 	for _, file := range files {
-		fmt.Println(file.Name())
+		fmt.Println(filetype.Permission(), filetype.Size(), file.Name())
 	}
 }
 
-func RecursiveFile(path string, directoryExist bool) {
+func RecursiveFile(path string) {
 	files, err := os.ReadDir(path)
-	if err != nil {
-		log.Fatal(err)
-	}
+	error.Error(err)
 
 	for _, file := range files {
-		if directoryExist { // if a subdirectory exist, it will list the file inside it
-			fmt.Println(file.Name())
+		fmt.Println(file.Name())
+		if file.IsDir() {
+			fmt.Println(colors.ColorReset)
+			ListFile(file.Name())
+		}
+		if !file.Type().IsDir() {
+			fmt.Println(colors.ColorGreen)
 		}
 	}
 }

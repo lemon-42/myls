@@ -25,7 +25,7 @@ func main() {
 
 	// "-R" flags
 	if flags.Recursive {
-		listFile.RecursiveFile(userInput, true)
+		listFile.RecursiveFile(userInput)
 	}
 
 	// "-l" flags
